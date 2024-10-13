@@ -13,6 +13,9 @@ struct DiaryView: View {
     @Query private var items: [Food] = []
     @State private var text: String = ""
     
+    // State variable to track multiple selected items
+    @State private var selectedItems: Set<Food> = []
+
     var body: some View {
         ZStack {
             Spacer()
@@ -38,12 +41,22 @@ struct DiaryView: View {
                     GridItem(.adaptive(minimum: 55))
                 ], spacing: 16) {
                     ForEach(items, id: \.self) { item in
-                        Text(item.emoji)
-                            .frame(maxWidth: .infinity, minHeight: 55)
-                            .font(.system(size: 36))
-                            .background(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: .infinity))
-                            .shadow(color: .gray, radius: 1, x: 0, y: 1)
+                        Button(action: {
+                            // Toggle the selected item in the Set
+                            if selectedItems.contains(item) {
+                                selectedItems.remove(item) // Deselect if already selected
+                            } else {
+                                selectedItems.insert(item) // Select new item
+                            }
+                        }) {
+                            Text(item.emoji)
+                                .frame(maxWidth: .infinity, minHeight: 55)
+                                .font(.system(size: 36))
+                                // Change background color based on selection state
+                                .background(selectedItems.contains(item) ? Color.yellow : Color.white)
+                                .clipShape(RoundedRectangle(cornerRadius: .infinity))
+                                .shadow(color: .gray, radius: 1, x: 0, y: 1)
+                        }
                     }
                 }
                 .padding()
@@ -52,9 +65,12 @@ struct DiaryView: View {
             Spacer()
                 .background(Color("WhiteSmoke"))
             
-                Button("Next") {
-                    
-                }.frame(maxWidth: .infinity, minHeight: 55)
+            Button("Next") {
+                // Action for next button
+                // You can use the selectedItems Set here
+                print("Selected items: \(selectedItems.map { $0.emoji })")
+            }
+            .frame(maxWidth: .infinity, minHeight: 55)
             
         }
         .background(Color("WhiteSmoke"))
