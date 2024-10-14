@@ -9,29 +9,74 @@ import SwiftUI
 
 struct FeelingView: View {
     
-    let items = Array(0..<10)
+    // Ordered feelings from "baddest" to "best"
+    let feelings: [Feeling] = [
+        Feeling(name: "Angry", color: .red, emoji: "😡"),
+        Feeling(name: "Worried", color: .purple, emoji: "😟"),
+        Feeling(name: "Sad", color: .blue, emoji: "😢"),
+        Feeling(name: "Lonely", color: .indigo, emoji: "🥺"),
+        Feeling(name: "Confused", color: .brown, emoji: "🤔"),
+        Feeling(name: "Tired", color: .gray, emoji: "😴"),
+        Feeling(name: "Surprised", color: .pink, emoji: "😲"),
+        Feeling(name: "Calm", color: .green, emoji: "😌"),
+        Feeling(name: "Excited", color: .orange, emoji: "🤩"),
+        Feeling(name: "Happy", color: .yellow, emoji: "😊")
+    ]
+    
+    @State private var selectedFeeling: Feeling? // Track the selected feeling
     
     var body: some View {
         VStack {
-            Text("How are you feeling today?")
-            Text("The feeling tracker allow you to analyse your state of mind.")
+            // Left-aligned text at the top
+            VStack(alignment: .leading) {
+                Text("How are you feeling today?")
+                    .font(.headline)
+                    .padding(.bottom, 5)
+                
+                Text("The feeling tracker allows you to analyze your state of mind.")
+                    .font(.subheadline)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding([.top, .leading], 20)
             
-            ScrollView(.horizontal) {
-                HStack(spacing: 20) {
-                    ForEach(items, id: \.self) { index in
-                        Text("Item \(index)")
-                            .padding()
-                            .background(Color.blue)
-                            .cornerRadius(8)
-                            .rotationEffect(.degrees(Double(index) * 5 - 30))
-                            .offset(x: CGFloat(index) * 15 - 10, y: CGFloat(index) * -10)
-                            .opacity(1 - Double(index) / Double(items.count))
+            // Scrollable emotion list with vertical scrolling
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(spacing: 20) { // Change HStack to VStack for vertical layout
+                    ForEach(feelings) { feeling in
+                        Button(action: {
+                            selectedFeeling = feeling // Update the selected feeling
+                        }) {
+                            VStack {
+                                Text(feeling.emoji)
+                                    .font(.largeTitle)
+                                Text(feeling.name)
+                                    .font(.headline)
+                                    .foregroundColor(.black) // Change text color to black for contrast
+                                    .padding(.top, 5)
+                            }
+                            .frame(width: 200, height: 150) // Same size for all buttons
+                            .background(selectedFeeling == feeling ? Color.yellow : Color.white) // Highlight selected feeling
+                            .cornerRadius(15) // Round the corners
+                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2) // Add shadow for a shaded effect
+                        }
+                        .buttonStyle(PlainButtonStyle()) // Removes the default button style
                     }
                 }
-                .frame(height: 300)
                 .padding()
             }
+            .frame(maxHeight: .infinity) // Fill the available height with the ScrollView
+            
+            // Next button at the bottom
+            Button(action: {
+                print("Next button tapped") // Action for the Next button
+            }) {
+                Text("Next")
+                    .foregroundColor(.green) // Change text color to blue
+                    .padding()
+            }
+            .padding(.bottom, 20) // Padding from the bottom of the screen
         }
+        .frame(maxHeight: .infinity, alignment: .center) // Centers the VStack's content vertically
     }
 }
 
