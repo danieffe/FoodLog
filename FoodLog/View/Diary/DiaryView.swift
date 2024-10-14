@@ -14,10 +14,6 @@ struct DiaryView: View {
     @State private var text: String = ""
     
     var body: some View {
-        ZStack {
-            Spacer()
-        }
-        .background(Color("WhiteSmoke"))
         VStack {
             
             Text("What’s been on your plate today?")
@@ -44,6 +40,9 @@ struct DiaryView: View {
                             .background(.white)
                             .clipShape(RoundedRectangle(cornerRadius: .infinity))
                             .shadow(color: .gray, radius: 1, x: 0, y: 1)
+                            .onTapGesture {
+                                text.append(item.name)
+                            }
                     }
                 }
                 .padding()

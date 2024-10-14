@@ -6,9 +6,11 @@
 //
 
 import SwiftData
+import Foundation
 
 @Model
-class Food {
+class Food: Identifiable {
+    var id = UUID()
     var name: String
     var emoji: String
     
