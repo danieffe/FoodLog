@@ -17,10 +17,6 @@ struct DiaryView: View {
     @State private var selectedItems: Set<Food> = []
 
     var body: some View {
-        ZStack {
-            Spacer()
-        }
-        .background(Color("WhiteSmoke"))
         VStack {
             
             Text("What’s been on your plate today?")
