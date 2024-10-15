@@ -82,12 +82,14 @@ struct ContentView: View {
                         print("Next button tapped")
                     }
                     .font(.headline)
-                    .foregroundColor(.orange)
+                    .foregroundColor(viewModel.selectedSymptoms.isEmpty ? .gray : .orange) // Color when disabled/enabled
                     .padding(.bottom, 20)
                     .disabled(viewModel.selectedSymptoms.isEmpty) // Disable if no symptoms selected
+                    
                 }
                 .sheet(isPresented: $showAddSymptom) {
                     AddSymptomView(viewModel: viewModel)
+                        .presentationDetents([.fraction(0.5)]) // Present modal at half the height
                 }
             }
         }
