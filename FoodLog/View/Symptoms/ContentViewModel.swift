@@ -20,6 +20,7 @@ class ContentViewModel: ObservableObject {
         Symptom(emoji: "😨", name: "Hives"),
         Symptom(emoji: "🤕", name: "Sinusitis"),
         Symptom(emoji: "😴", name: "Chronic Fatigue")
+    
     ]
     
     // Track selected symptoms

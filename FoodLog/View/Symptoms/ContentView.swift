@@ -19,79 +19,77 @@ struct ContentView: View {
         NavigationView {
             ZStack {
                 VStack(alignment: .center) {
-                    // Add padding to the whole VStack to move the content down
-                    VStack {
-                        Text("How did you feel after eating?")
-                            .font(.headline)
-                            .foregroundColor(.black)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .padding([.top, .leading], 16)
-
-                        // Search bar
-                        TextField("Search symptoms", text: $searchText)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 10)
-                            .background(Color.white)
-                            .cornerRadius(15)
-                            .shadow(radius: 3)
-                            .padding(.horizontal, 16)
-                            .padding(.bottom, 10) // Space below the search bar
-
-                        // Symptom grid
-                        ScrollView {
-                            LazyVGrid(columns: columns, spacing: 10) {
-                                ForEach(filteredSymptoms()) { symptom in
-                                    SymptomView(
-                                        symptom: symptom,
-                                        isSelected: viewModel.selectedSymptoms.contains(symptom),
-                                        action: {
-                                            viewModel.toggleSymptomSelection(symptom)
-                                        }
-                                    )
-                                }
-
-                                // Plus button to add new symptom
-                                Button(action: {
-                                    showAddSymptom.toggle()
-                                }) {
-                                    VStack {
-                                        Image(systemName: "plus.circle.fill")
-                                            .resizable()
-                                            .frame(width: 40, height: 40)
-                                        
-                                        Text("Add new")
-                                            .font(.system(size: 12))
-                                            .foregroundColor(.black)
-                                            .multilineTextAlignment(.center)
-                                            .lineLimit(2)
-                                            .frame(maxHeight: 40)
-                                    }
-                                    .padding()
-                                    .frame(width: 100, height: 100)
-                                    .background(Color.white)
-                                    .cornerRadius(20)
-                                    .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 5)
-                                }
-                            }
-                            .padding(.horizontal, 20)
-                        }
-
-                        Spacer()
-
-                        // "Next" Button
-                        Button("Next") {
-                            print("Next button tapped")
-                        }
+                    // Title
+                    Text("How did you feel after eating?")
                         .font(.headline)
-                        .foregroundColor(viewModel.selectedSymptoms.isEmpty ? .gray : .orange)
-                        .padding(.bottom, 20)
-                        .disabled(viewModel.selectedSymptoms.isEmpty)
-                        .opacity(viewModel.selectedSymptoms.isEmpty ? 0.5 : 1.0)
+                        .foregroundColor(.black)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding([.top, .leading], 16)
+                    
+                    // Search bar
+                    TextField("Search symptoms", text: $searchText)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(Color.white)
+                        .cornerRadius(15)
+                        .shadow(radius: 3)
+                        .padding(.horizontal, 16)
+                        .padding(.bottom, 10) // This line adds space below the search bar
+
+                    // Symptom grid
+                    ScrollView {
+                        LazyVGrid(columns: columns, spacing: 10) {
+                            ForEach(filteredSymptoms()) { symptom in
+                                SymptomView(
+                                    symptom: symptom,
+                                    isSelected: viewModel.selectedSymptoms.contains(symptom),
+                                    action: {
+                                        viewModel.toggleSymptomSelection(symptom)
+                                    }
+                                )
+                            }
+
+                            // Plus button to add new symptom
+                            Button(action: {
+                                showAddSymptom.toggle()
+                            }) {
+                                VStack {
+                                    Image(systemName: "plus.circle.fill")
+                                        .resizable()
+                                        .frame(width: 40, height: 40)
+                                    
+                                    Text("Add new")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(.black)
+                                        .multilineTextAlignment(.center)
+                                        .lineLimit(2)
+                                        .frame(maxHeight: 40)
+                                }
+                                .padding()
+                                .frame(width: 100, height: 100)
+                                .background(Color.white)
+                                .cornerRadius(20)
+                                .shadow(color: .gray.opacity(0.5), radius: 5, x: 0, y: 5)
+                            }
+                        }
+                        .padding(.horizontal, 20)
                     }
-                    .padding(.top, 40) // Add top padding to move all content down
+
+                    Spacer()
+
+                    // "Next" Button
+                    Button("Next") {
+                        print("Next button tapped")
+                    }
+                    .font(.headline)
+                    .foregroundColor(viewModel.selectedSymptoms.isEmpty ? .gray : .orange) // Color when disabled/enabled
+                    .padding(.bottom, 20)
+                    .disabled(viewModel.selectedSymptoms.isEmpty) // Disable if no symptoms selected
+                    
                 }
                 .sheet(isPresented: $showAddSymptom) {
                     AddSymptomView(viewModel: viewModel)
+                        .presentationDetents([.fraction(0.5)]) // Present modal at half the height
                 }
             }
         }
