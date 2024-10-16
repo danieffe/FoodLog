@@ -50,14 +50,14 @@ struct FeelingView: View {
                                 Text(feeling.emoji)
                                     .font(.largeTitle)
                                 Text(feeling.name)
-                                    .font(.headline)
+                                    .font(.system(size: 12))
                                     .foregroundColor(.black) // Change text color to black for contrast
-                                    .padding(.top, 5)
+                                    .padding(.top, 1)
                             }
-                            .frame(width: 200, height: 150) // Same size for all buttons
+                            .frame(width: 110, height: 110) // Same size for all buttons
                             .background(selectedFeeling == feeling ? Color.yellow : Color.white) // Highlight selected feeling
                             .cornerRadius(15) // Round the corners
-                            .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2) // Add shadow for a shaded effect
+                            .shadow(color: Color.black.opacity(0.2), radius: 8, x: 2, y: 3) // Add shadow for a shaded effect
                         }
                         .buttonStyle(PlainButtonStyle()) // Removes the default button style
                     }
@@ -66,14 +66,16 @@ struct FeelingView: View {
             }
             .frame(maxHeight: .infinity) // Fill the available height with the ScrollView
             
-            // Next button at the bottom
+            // Next button at the bottom, disabled if no feeling is selected
             Button(action: {
                 print("Next button tapped") // Action for the Next button
             }) {
                 Text("Next")
-                    .foregroundColor(.green) // Change text color to blue
+                    .font(.headline)
+                    .foregroundColor(selectedFeeling == nil ? .gray : .orange) // Gray when disabled, blue when enabled
                     .padding()
             }
+            .disabled(selectedFeeling == nil) // Disable the button if no feeling is selected
             .padding(.bottom, 20) // Padding from the bottom of the screen
         }
         .frame(maxHeight: .infinity, alignment: .center) // Centers the VStack's content vertically
