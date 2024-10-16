@@ -6,16 +6,18 @@
 //
 
 import SwiftData
-import Foundation
 
 @Model
-class Food: Identifiable {
-    var id = UUID()
+class Food {
     var name: String
     var emoji: String
-    
-    init(name: String, emoji: String) {
+    var category: String
+
+    init(name: String, emoji: String, category: String) {
         self.name = name
         self.emoji = emoji
+        self.category = category
     }
 }
+
+

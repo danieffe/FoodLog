@@ -11,7 +11,7 @@ import SwiftData
 struct MainView: View {
     var body: some View {
         TabView {
-            DiaryView()
+            FoodSelectView()
                 .tabItem {
                     Label("", systemImage: "fork.knife")
                 }
