@@ -2,87 +2,104 @@
 //  DiaryView.swift
 //  FoodLog
 //
-//  Created by Mateus Mansuelli on 08/10/24.
+//  Created by Mateus Mansuelli on 15/10/24.
 //
 
 import SwiftUI
 import SwiftData
 
 struct DiaryView: View {
-    @Environment(\.modelContext) private var modelContext
+    @State var text: String = ""
+    @FocusState var isFocused: Bool
+    @State var isShowingPopover: Bool = false
     @Query private var items: [Food] = []
-    @State private var text: String = ""
+    @State var selectedItems: Set<Food> = []
     
-    // State variable to track multiple selected items
-    @State private var selectedItems: Set<Food> = []
-
     var body: some View {
-        VStack {
-            
-            Text("What’s been on your plate today?")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(16)
-            
-            TextField("Banana, tomato, cheese", text: $text)
-                .frame(minHeight: 55)
-                .padding(.horizontal, 16)
-                .textFieldStyle(.plain)
+        NavigationStack {
+            VStack {
+                Text("What’s been on your plate today?")
+                    .font(.title2)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(16)
+                
+                VStack {
+                    ZStack {
+                        
+                        HStack {
+                            Spacer()
+                            
+                            VStack {
+                                Button("", systemImage: "info.circle.fill", action: {
+                                    isShowingPopover.toggle()
+                                })
+                                .popover(
+                                    isPresented: $isShowingPopover, attachmentAnchor: .point(.leading)                                    ) {
+                                        
+                                        Text("Insert your meals separated by commas")
+                                            .lineLimit(4)
+                                            .padding()
+                                            .frame(maxWidth: 250, minHeight: 80)
+                                            .presentationCompactAdaptation(.popover)
+                                    }
+                                Spacer()
+                            }
+                        }
+                        
+                        TextField("Banana, tomato, cheese...", text: $text, axis: .vertical)
+                            .padding(16)
+                            .textFieldStyle(.plain)
+                            .focused($isFocused)
+                    }
+                }
+                .frame(maxHeight: 200)
                 .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: .infinity))
+                .clipShape(RoundedRectangle(cornerRadius: 16))
                 .shadow(color: .gray, radius: 1, x: 0, y: 1)
                 .padding(.horizontal, 16)
-            
-            ScrollView {
-                LazyVGrid(columns: [
-                    GridItem(.adaptive(minimum: 55))
-                ], spacing: 16) {
-                    ForEach(items, id: \.self) { item in
-                        Button(action: {
-                            // Toggle the selected item in the Set
-                            if selectedItems.contains(item) {
-                                selectedItems.remove(item) // Deselect if already selected
-                            } else {
-                                selectedItems.insert(item) // Select new item
-                            }
-                        }) {
-                            Text(item.emoji)
+                .onTapGesture {
+                    isFocused = true
+                }
+                
+                HStack {
+                    Spacer()
+                    NavigationLink(destination: ResultView(text: text)) {
+                        Text("Next")
+                            .frame(width: 100, height: 40)
+                            .background(Color.accentColor)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .foregroundStyle(.white)
+                    }
+                    .padding(16)
+                }
+                
+                List(FoodCategory.allCases) { item in
+                    Section(item.name) {
+                        ForEach(items.filter { $0.category == item }) { food in
+                            Text(food.emoji + food.name)
                                 .frame(maxWidth: .infinity, minHeight: 55)
                                 .font(.system(size: 36))
-                                // Change background color based on selection state
-                                .background(selectedItems.contains(item) ? Color.yellow : Color.white)
                                 .clipShape(RoundedRectangle(cornerRadius: .infinity))
                                 .shadow(color: .gray, radius: 1, x: 0, y: 1)
                         }
                     }
+                    
                 }
-                .padding()
-            }
-            
-            Spacer()
-                .background(Color("WhiteSmoke"))
-            
-            Button("Next") {
-                // Action for next button
-                // You can use the selectedItems Set here
-                print("Selected items: \(selectedItems.map { $0.emoji })")
-            }
-            .frame(maxWidth: .infinity, minHeight: 55)
-            
-        }
-        .background(Color("WhiteSmoke"))
-    }
-    
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-    
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+                .frame(maxWidth: .infinity, minHeight: 500, maxHeight: .infinity)
+                .listStyle(.grouped)
+                
+                
+                //                    ForEach(items, id: \.self) { item in
+                //                        Button(action: {
+                //                            if selectedItems.contains(item) {
+                //                                selectedItems.remove(item)
+                //                            } else {
+                //                                selectedItems.insert(item)
+                //                                text.append(item.name)
+                //                            }
+                //                        }) {
+                //                        }
+                //                    }
             }
         }
     }

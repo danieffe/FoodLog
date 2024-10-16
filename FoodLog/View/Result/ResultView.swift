@@ -8,23 +8,26 @@
 import SwiftUI
 
 struct ResultView: View {
+    
+    var viewModel: ResultViewModel
+    init (text: String) {
+        viewModel = .init(text: text)
+    }
     var body: some View {
         
-        TabView {
-            MainView()
-                .tabItem {
-                    Label("Home", systemImage: "house")
+        VStack {
+            ForEach(viewModel.loadList(), id: \.self) { item in
+                HStack {
+                    Text(item)
+                    Spacer()
                 }
-
-            InsightView()
-                .tabItem {
-                    Label("Settings", systemImage: "gear")
-                }
+                .padding(.horizontal, 16)
+                .padding(.vertical, 4)
+            }.listRowSeparator(.visible)
         }
-        .frame(minWidth: 400, minHeight: 300)
     }
 }
 
 #Preview {
-    ResultView()
+    ResultView(text: "banana, pineapple, orange, apple, chocolate")
 }

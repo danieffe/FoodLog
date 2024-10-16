@@ -13,12 +13,12 @@ struct MainView: View {
         TabView {
             DiaryView()
                 .tabItem {
-                    Label("", systemImage: "fork.knife")
+                    Label("Diary", systemImage: "fork.knife")
                 }
             
             InsightView()
                 .tabItem {
-                    Label("", systemImage: "lightbulb.fill")
+                    Label("Insight", systemImage: "lightbulb.fill")
                 }
         }
         .frame(minWidth: 400, minHeight: 300)
