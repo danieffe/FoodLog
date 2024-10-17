@@ -13,7 +13,7 @@ class Food: Identifiable {
     var id = UUID()
     var name: String
     var emoji: String
-    var category: FoodCategory = FoodCategory.none
+    var category: FoodCategory? = FoodCategory.none
     
     init(name: String, emoji: String, category: FoodCategory) {
         self.name = name
