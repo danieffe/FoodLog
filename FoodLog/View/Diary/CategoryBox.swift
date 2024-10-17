@@ -47,55 +47,60 @@ struct CategoryBox: View {
                 // Expandable food list inside the box
                 if isExpanded {
                     VStack(spacing: 10) {
-                        ForEach(foods, id: \.name) { food in
-                            Toggle(isOn: Binding(
-                                get: { selectedFoods[food.name] ?? false },
-                                set: { newValue in selectedFoods[food.name] = newValue }
-                            )) {
-                                HStack {
-                                    Text(food.emoji)
-                                        .font(.largeTitle)
-                                    Text(food.name)
-                                        .font(.headline)
-                                        .fontWeight(.regular)
-                                        .foregroundColor(.white) // Set text to white
-                                        .shadow(color: .black, radius: 2, x: 0, y: 2) // Add shadow to food text
+                        ScrollView { // Add a ScrollView here to handle overflow
+                            VStack(spacing: 10) {
+                                ForEach(foods, id: \.name) { food in
+                                    Toggle(isOn: Binding(
+                                        get: { selectedFoods[food.name] ?? false },
+                                        set: { newValue in selectedFoods[food.name] = newValue }
+                                    )) {
+                                        HStack {
+                                            Text(food.emoji)
+                                                .font(.largeTitle)
+                                            Text(food.name)
+                                                .font(.headline)
+                                                .fontWeight(.regular)
+                                                .foregroundColor(.white) // Set text to white
+                                                .shadow(color: .black, radius: 2, x: 0, y: 2) // Add shadow to food text
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        // New Food Entry
-                        HStack(spacing: 10) {
-                            TextField("Add new food", text: $newFoodName)
-                                .padding(10)
-                                .background(Color.white)
-                                .cornerRadius(8)
-                                .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.gray, lineWidth: 1)
-                                )
-                                .frame(height: 50)
-                            
-                            Button(action: {
-                                addNewFood()
-                            }) {
-                                Text("Add")
-                                    .foregroundColor(.white)
-                                    .frame(width: 80, height: 50)
-                                    .background(Color.orange)
-                                    .cornerRadius(8)
-                                    .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
-                                            .stroke(Color.gray, lineWidth: 1)
-                                    )
+                                // New Food Entry
+                                HStack(spacing: 10) {
+                                    TextField("Add new food", text: $newFoodName)
+                                        .padding(10)
+                                        .background(Color.white)
+                                        .cornerRadius(8)
+                                        .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 8)
+                                                .stroke(Color.gray, lineWidth: 1)
+                                        )
+                                        .frame(height: 50)
+                                    
+                                    Button(action: {
+                                        addNewFood()
+                                    }) {
+                                        Text("Add")
+                                            .foregroundColor(.white)
+                                            .frame(width: 80, height: 50)
+                                            .background(Color.orange)
+                                            .cornerRadius(8)
+                                            .shadow(color: Color.black.opacity(0.2), radius: 3, x: 0, y: 2)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .stroke(Color.gray, lineWidth: 1)
+                                            )
+                                    }
+                                    .disabled(newFoodName.isEmpty)
+                                }
+                                .padding(.horizontal, 20)
                             }
-                            .disabled(newFoodName.isEmpty)
                         }
-                        .padding(.horizontal, 20)
+                        .padding(.top, 10)
+                        .frame(maxHeight: 200) // Set a maximum height for the ScrollView
                     }
-                    .padding(.top, 10)
                 }
             }
             .background(
@@ -107,7 +112,7 @@ struct CategoryBox: View {
                     .clipped()
                     .overlay(
                         RoundedRectangle(cornerRadius: 15)
-                            .fill(Color.black.opacity(0.1)) // Make the background darker for better text visibility
+                            .fill(Color.black.opacity(0.2)) // Make the background darker for better text visibility
                             .shadow(color: Color.black.opacity(0.5), radius: 5, x: 0, y: 3)
                     )
             )
