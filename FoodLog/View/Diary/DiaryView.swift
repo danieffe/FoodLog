@@ -105,7 +105,11 @@ struct FoodSectionView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: 35, alignment: .leading)
                 .onTapGesture {
+                    if !text.wrappedValue.isEmpty && !text.wrappedValue.hasSuffix(", ") {
+                        text.wrappedValue.append(", ")
+                    }
                     text.wrappedValue.append("\(food.name), ")
+                    
                 }
             }
         } header: {

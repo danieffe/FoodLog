@@ -16,6 +16,13 @@ struct ResultView: View {
     var body: some View {
         
         VStack {
+            
+            Text("Today's plate:")
+                .font(.title)
+                .bold()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(16)
+            
             ForEach(viewModel.loadList(), id: \.self) { item in
                 HStack {
                     Text(item)
@@ -24,40 +31,55 @@ struct ResultView: View {
                 .padding(.horizontal, 16)
                 .padding(.vertical, 4)
             }.listRowSeparator(.visible)
+            
+            NavigationLink(destination: FeelingView()) {
+                VStack {
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(.gray)
+                    HStack {
+                        Text("How have you been feeling today?")
+                            .foregroundStyle(.black)
+                            .font(.headline)
+                        Spacer()
+                        Image(systemName: "arrowshape.right.circle")
+                            .foregroundStyle(.accent)
+                    }
+                    .padding(16)
+                }
+            }.padding(.top, 16)
+            
+            NavigationLink(destination: FeelingView()) {
+                VStack {
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(.gray)
+                    HStack {
+                        Text("Noticing any odd vibes or symptoms?")
+                            .foregroundStyle(.black)
+                            .font(.headline)
+                        Spacer()
+                        Image(systemName: "arrowshape.right.circle")
+                            .foregroundStyle(.accent)
+                    }
+                    .padding(16)
+                    Rectangle()
+                        .frame(height: 1)
+                        .foregroundColor(.gray)
+                }
+            }.padding(.bottom, 16)
+            Spacer()
+            
+            Text("Save")
+                .frame(maxWidth: .infinity, minHeight: 40)
+                .background(Color.accentColor)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .padding(16)
+                .foregroundStyle(.white)
         }
     }
 }
 
 #Preview {
     ResultView(text: "banana, pineapple, orange, apple, chocolate")
-}
-struct Bookmark: Identifiable {
-    let id = UUID()
-    let name: String
-    let icon: String
-    var items: [Bookmark]?
-
-    // some example websites
-    static let apple = Bookmark(name: "Apple", icon: "1.circle")
-    static let bbc = Bookmark(name: "BBC", icon: "square.and.pencil")
-    static let swift = Bookmark(name: "Swift", icon: "bolt.fill")
-    static let twitter = Bookmark(name: "Twitter", icon: "mic")
-
-    // some example groups
-    static let example1 = Bookmark(name: "Favorites", icon: "star", items: [Bookmark.apple, Bookmark.bbc, Bookmark.swift, Bookmark.twitter])
-    static let example2 = Bookmark(name: "Recent", icon: "timer", items: [Bookmark.apple, Bookmark.bbc, Bookmark.swift, Bookmark.twitter])
-    static let example3 = Bookmark(name: "Recommended", icon: "hand.thumbsup", items: [Bookmark.apple, Bookmark.bbc, Bookmark.swift, Bookmark.twitter])
-}
-
-struct ContentView2: View {
-    let items: [Bookmark] = [.example1, .example2, .example3]
-
-    var body: some View {
-        List(items, children: \.items) { row in
-            HStack {
-                Image(systemName: row.icon)
-                Text(row.name)
-            }
-        }
-    }
 }

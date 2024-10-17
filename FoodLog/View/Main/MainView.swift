@@ -16,7 +16,7 @@ struct MainView: View {
                     Label("Diary", systemImage: "fork.knife")
                 }
             
-            ContentView2()
+            InsightView()
                 .tabItem {
                     Label("Insight", systemImage: "lightbulb.fill")
                 }
