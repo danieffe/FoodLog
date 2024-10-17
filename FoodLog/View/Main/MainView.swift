@@ -13,12 +13,12 @@ struct MainView: View {
         TabView {
             FoodSelectView()
                 .tabItem {
-                    Label("", systemImage: "fork.knife")
+                    Label("LogPage", systemImage: "fork.knife")
                 }
             
             InsightView()
                 .tabItem {
-                    Label("", systemImage: "lightbulb.fill")
+                    Label("Insights", systemImage: "lightbulb.fill")
                 }
         }
         .frame(minWidth: 400, minHeight: 300)
