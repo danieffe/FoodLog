@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SymptomView: View {
+    
+//    @Binding var selectedSymptom: Symptom?
     let symptom: Symptom
     let isSelected: Bool
     let action: () -> Void
@@ -38,6 +40,8 @@ struct SymptomView: View {
 }
 
 struct SymptomView_Previews: PreviewProvider {
+    @State var selectedItem: Symptom? = Symptom(emoji: "😴", name: "Chronic Fatigue")
+    
     static var previews: some View {
         // Example symptom for the preview
         SymptomView(symptom: Symptom(emoji: "😴", name: "Chronic Fatigue"), isSelected: false, action: {})
