@@ -21,7 +21,7 @@ class ContentViewModel: ObservableObject {
         Symptom(emoji: "🤕", name: "Sinusitis"),
         Symptom(emoji: "😴", name: "Chronic Fatigue"),
         Symptom(emoji: "🌡️", name: "Fever"),
-        Symptom(emoji: "🤒", name: "Sore Throat"),
+        Symptom(emoji: "😵", name: "Sore Throat"),
         Symptom(emoji: "🤢", name: "Nausea"),
         Symptom(emoji: "🤮", name: "Vomiting"),
         Symptom(emoji: "🤒", name: "Cold"),
