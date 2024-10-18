@@ -24,6 +24,8 @@ struct FeelingView: View {
     ]
     
     @Binding var selectedFeeling: Feeling?
+    @Environment(\.presentationMode) var presentationMode
+    @State var animationSelectedFeeling: Feeling?
     
     var body: some View {
         VStack {
@@ -45,6 +47,7 @@ struct FeelingView: View {
                     ForEach(feelings) { feeling in
                         Button(action: {
                             selectedFeeling = feeling // Update the selected feeling
+                            animationSelectedFeeling = feeling
                         }) {
                             VStack {
                                 Text(feeling.emoji)
@@ -55,7 +58,7 @@ struct FeelingView: View {
                                     .padding(.top, 1)
                             }
                             .frame(width: 110, height: 110) // Same size for all buttons
-                            .background(selectedFeeling == feeling ? Color.yellow : Color.white) // Highlight selected feeling
+                            .background(animationSelectedFeeling == feeling ? Color.yellow : Color.white) // Highlight selected feeling
                             .cornerRadius(15) // Round the corners
                             .shadow(color: Color.black.opacity(0.2), radius: 8, x: 2, y: 3) // Add shadow for a shaded effect
                         }
@@ -68,14 +71,14 @@ struct FeelingView: View {
             
             // Next button at the bottom, disabled if no feeling is selected
             Button(action: {
-                print("Next button tapped") // Action for the Next button
+                presentationMode.wrappedValue.dismiss()
             }) {
-                Text("Next")
+                Text("Confirm")
                     .font(.headline)
-                    .foregroundColor(selectedFeeling == nil ? .gray : .orange) // Gray when disabled, blue when enabled
+                    .foregroundColor(animationSelectedFeeling == nil ? .gray : .orange) // Gray when disabled, blue when enabled
                     .padding()
             }
-            .disabled(selectedFeeling == nil) // Disable the button if no feeling is selected
+            .disabled(animationSelectedFeeling == nil) // Disable the button if no feeling is selected
             .padding(.bottom, 20) // Padding from the bottom of the screen
         }
         .frame(maxHeight: .infinity, alignment: .center) // Centers the VStack's content vertically

@@ -34,10 +34,7 @@ struct ResultView: View {
                 }.listRowSeparator(.visible)
             }
             
-            NavigationLink(destination: FeelingView(selectedFeeling:  Binding(
-                get: { selectedFeeling },
-                set: { selectedFeeling = $0 }
-            ))) {
+            NavigationLink(destination: FeelingView(selectedFeeling: $selectedFeeling)) {
                 VStack {
                     Rectangle()
                         .frame(height: 1)
@@ -51,14 +48,23 @@ struct ResultView: View {
                         Image(systemName: "arrowshape.right.circle")
                             .foregroundStyle(.accent)
                     }
-                    .padding(16)
+                    .padding(.top, 16)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, selectedFeeling == nil ? 16 : 0)
+                    if let selectedFeeling = selectedFeeling {
+                        HStack {
+                            Text("\(selectedFeeling.emoji) \(selectedFeeling.name)")
+                                .foregroundStyle(.black)
+                                .font(.subheadline)
+                            Spacer()
+                        }.padding(.horizontal, 16)
+                            .padding(.bottom, 16)
+                    }
+                    
                 }
             }.padding(.top, -8)
             
-            NavigationLink(destination: FeelingView(selectedFeeling:  Binding(
-                get: { selectedFeeling },
-                set: { selectedFeeling = $0 }
-            ))) {
+            NavigationLink(destination: FeelingView(selectedFeeling: $selectedFeeling)) {
                 VStack {
                     Rectangle()
                         .frame(height: 1)
