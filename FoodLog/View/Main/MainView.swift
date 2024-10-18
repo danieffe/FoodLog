@@ -11,14 +11,14 @@ import SwiftData
 struct MainView: View {
     var body: some View {
         TabView {
-            DiaryView()
+            FoodSelectView()
                 .tabItem {
-                    Label("Diary", systemImage: "fork.knife")
+                    Label("LogPage", systemImage: "fork.knife")
                 }
             
             InsightView()
                 .tabItem {
-                    Label("Insight", systemImage: "lightbulb.fill")
+                    Label("Insights", systemImage: "lightbulb.fill")
                 }
         }
         .frame(minWidth: 400, minHeight: 300)
