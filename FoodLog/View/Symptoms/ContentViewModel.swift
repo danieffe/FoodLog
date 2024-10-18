@@ -19,8 +19,14 @@ class ContentViewModel: ObservableObject {
         Symptom(emoji: "🌿", name: "Eczema"),
         Symptom(emoji: "😨", name: "Hives"),
         Symptom(emoji: "🤕", name: "Sinusitis"),
-        Symptom(emoji: "😴", name: "Chronic Fatigue")
-    
+        Symptom(emoji: "😴", name: "Chronic Fatigue"),
+        Symptom(emoji: "🌡️", name: "Fever"),
+        Symptom(emoji: "🤒", name: "Sore Throat"),
+        Symptom(emoji: "🤢", name: "Nausea"),
+        Symptom(emoji: "🤮", name: "Vomiting"),
+        Symptom(emoji: "🤒", name: "Cold"),
+        Symptom(emoji: "🥵", name: "Heat Intolerance"),
+        Symptom(emoji: "💤", name: "Excessive Sleepiness")
     ]
     
     // Track selected symptoms
@@ -40,4 +46,5 @@ class ContentViewModel: ObservableObject {
         }
     }
 }
+
 

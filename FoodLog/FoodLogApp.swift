@@ -12,7 +12,7 @@ import SwiftData
 struct FoodApp: App {
     var body: some Scene {
         WindowGroup {
-            FoodSelectView()
+            ContentView()
                 .modelContainer(for: Food.self)  // Set up the SwiftData container for the Food model
         }
     }
