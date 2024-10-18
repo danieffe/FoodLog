@@ -23,7 +23,7 @@ struct FeelingView: View {
         Feeling(name: "Happy", color: .yellow, emoji: "😊")
     ]
     
-    @State private var selectedFeeling: Feeling? // Track the selected feeling
+    @Binding var selectedFeeling: Feeling?
     
     var body: some View {
         VStack {
@@ -82,6 +82,11 @@ struct FeelingView: View {
     }
 }
 
-#Preview {
-    FeelingView()
+struct FeelingView_Previews: PreviewProvider {
+    @State static var previewFeeling: Feeling? =
+    Feeling(name: "Angry", color: .red, emoji: "😡")
+
+    static var previews: some View {
+        FeelingView(selectedFeeling: $previewFeeling)
+    }
 }

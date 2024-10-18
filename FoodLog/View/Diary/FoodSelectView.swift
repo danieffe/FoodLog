@@ -14,9 +14,9 @@ struct FoodSelectView: View {
     @State private var selectedFoods: [String: Bool] = [:]
     @State private var newFoodName: String = ""
     @State private var showInfoAlert: Bool = false
-
+    
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 ScrollViewReader { scrollViewProxy in
                     VStack {
@@ -27,7 +27,7 @@ struct FoodSelectView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
                             .padding(.top, 5) // Add top padding if necessary
-
+                        
                         ScrollView {
                             VStack(spacing: 0) {
                                 ForEach(viewModel.foodsByCategory().keys.sorted(), id: \.self) { category in
@@ -57,18 +57,16 @@ struct FoodSelectView: View {
                                 Spacer()
                             }
                         }
-
-                        Button(action: {
-                            print("Next button tapped")
-                        }) {
+                        
+                        let text = selectedFoods.map { $0.key }.joined(separator: ", ")
+                        NavigationLink(destination: ResultView(text: text)) {
                             Text("Next")
                                 .font(.headline)
                                 .foregroundColor(selectedFoods.values.contains(true) ? Color.orange : Color.gray)
                                 .padding(.top, 10)
                                 .padding(.bottom, 20)
+                                .disabled(!selectedFoods.values.contains(true))
                         }
-                        .disabled(!selectedFoods.values.contains(true))
-                        .padding(.horizontal)
                     }
                     .navigationTitle("Welcome to FoodLog!")
                     .navigationBarItems(trailing: Button(action: {
@@ -88,7 +86,7 @@ struct FoodSelectView: View {
             }
         }
     }
-
+    
     private func addNewFood(name: String, category: String) {
         let newFood = Food(name: name, emoji: "🍽️", category: category)
         viewModel.foods.append(newFood)
