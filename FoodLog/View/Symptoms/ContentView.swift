@@ -8,25 +8,26 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject var viewModel = ContentViewModel() // ViewModel instance
+    @Binding var selectedSymptoms: [Symptom] // Binding dei sintomi selezionati
+    @StateObject var viewModel = ContentViewModel()
     @State private var searchText: String = ""
-    @State private var showAddSymptom = false // Controls the add symptom sheet
+    @State private var showAddSymptom = false
+    
+    // Environment per gestire la navigazione
+    @Environment(\.presentationMode) var presentationMode
 
-    // Define a grid layout with 3 columns
     let columns = Array(repeating: GridItem(.flexible(minimum: 90, maximum: 120)), count: 3)
 
     var body: some View {
         NavigationView {
             ZStack {
                 VStack(alignment: .center) {
-                    // Title
                     Text("How did you feel after eating?")
                         .font(.headline)
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding([.top, .leading], 16)
                     
-                    // Search bar
                     TextField("Search symptoms", text: $searchText)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
@@ -34,22 +35,20 @@ struct ContentView: View {
                         .cornerRadius(15)
                         .shadow(radius: 3)
                         .padding(.horizontal, 16)
-                        .padding(.bottom, 10) // This line adds space below the search bar
-
-                    // Symptom grid
+                        .padding(.bottom, 10)
+                    
                     ScrollView {
                         LazyVGrid(columns: columns, spacing: 10) {
                             ForEach(filteredSymptoms()) { symptom in
                                 SymptomView(
                                     symptom: symptom,
-                                    isSelected: viewModel.selectedSymptoms.contains(symptom),
+                                    isSelected: selectedSymptoms.contains(symptom), // Controlla se il sintomo è già selezionato
                                     action: {
-                                        viewModel.toggleSymptomSelection(symptom)
+                                        toggleSymptomSelection(symptom)
                                     }
                                 )
                             }
-
-                            // Plus button to add new symptom
+                            
                             Button(action: {
                                 showAddSymptom.toggle()
                             }) {
@@ -77,25 +76,38 @@ struct ContentView: View {
 
                     Spacer()
 
-                    // "Next" Button
                     Button("Next") {
-                        print("Next button tapped")
+                        // Ritornare alla ResultView
+                        presentationMode.wrappedValue.dismiss() // Chiude la ContentView e torna indietro
                     }
                     .font(.headline)
-                    .foregroundColor(viewModel.selectedSymptoms.isEmpty ? .gray : .orange) // Color when disabled/enabled
+                    .foregroundColor(selectedSymptoms.isEmpty ? .gray : .orange)
                     .padding(.bottom, 20)
-                    .disabled(viewModel.selectedSymptoms.isEmpty) // Disable if no symptoms selected
-                    
+                    .disabled(selectedSymptoms.isEmpty)
                 }
                 .sheet(isPresented: $showAddSymptom) {
                     AddSymptomView(viewModel: viewModel)
-                        .presentationDetents([.fraction(0.5)]) // Present modal at half the height
+                        .presentationDetents([.fraction(0.5)])
                 }
             }
         }
+        .onAppear {
+            // Resettare i sintomi selezionati quando la vista appare
+            selectedSymptoms.removeAll()
+        }
     }
-
-    // Filter symptoms based on search text
+    
+    private func toggleSymptomSelection(_ symptom: Symptom) {
+        // Se il sintomo è già selezionato, lo deselezioniamo
+        if selectedSymptoms.contains(symptom) {
+            selectedSymptoms.removeAll(where: { $0 == symptom })
+        } else {
+            // Altrimenti lo aggiungiamo
+            selectedSymptoms.append(symptom)
+        }
+    }
+    
+    // Filtrare i sintomi in base al testo cercato
     private func filteredSymptoms() -> [Symptom] {
         if searchText.isEmpty {
             return viewModel.symptomsList
@@ -105,8 +117,12 @@ struct ContentView: View {
     }
 }
 
+
+
 struct ContentView_Previews: PreviewProvider {
+    @State static var mockSelectedSymptoms: [Symptom] = [] // Stato fittizio per la preview
+    
     static var previews: some View {
-        ContentView()
+        ContentView(selectedSymptoms: $mockSelectedSymptoms) // Passa il binding
     }
 }

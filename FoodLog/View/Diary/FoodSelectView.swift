@@ -59,14 +59,16 @@ struct FoodSelectView: View {
                         }
                         
                         let text = selectedFoods.map { $0.key }.joined(separator: ", ")
+                        
+                        // The button should only be enabled if at least one food is selected
                         NavigationLink(destination: ResultView(text: text)) {
                             Text("Next")
                                 .font(.headline)
-                                .foregroundColor(selectedFoods.values.contains(true) ? Color.orange : Color.gray)
+                                .foregroundColor(selectedFoods.values.contains(true) ? Color.orange : Color.gray) // Change text color based on condition
                                 .padding(.top, 10)
                                 .padding(.bottom, 20)
-                                .disabled(!selectedFoods.values.contains(true))
                         }
+                        .disabled(!selectedFoods.values.contains(true)) // Disable button if no foods are selected
                     }
                     .navigationTitle("Welcome to FoodLog!")
                     .navigationBarItems(trailing: Button(action: {
