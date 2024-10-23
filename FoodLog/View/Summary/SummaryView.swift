@@ -13,54 +13,56 @@ struct SummaryView: View {
     var selectedFeeling: Feeling?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Text("Summary")
-                .font(.largeTitle)
-                .bold()
-                .padding(.top)
+        ScrollView { // Wrap the content in a ScrollView
+            VStack(alignment: .leading, spacing: 20) {
+                Text("Summary")
+                    .font(.largeTitle)
+                    .bold()
+                    .padding(.top)
 
-            Text("TODAY YOU ATE:")
-                .font(.headline)
-            ForEach(selectedFoods) { food in
-                Text("• \(food.emoji) \(food.name)")
-            }
-
-            Text("THEN YOU EXPERIENCED:")
-                .font(.headline)
-            // Check if any symptoms are selected
-            if selectedSymptoms.isEmpty {
-                Text("No symptom selected.")
-            } else {
-                ForEach(selectedSymptoms) { symptom in
-                    Text("• \(symptom.emoji) \(symptom.name)")
+                Text("TODAY YOU ATE:")
+                    .font(.headline)
+                ForEach(selectedFoods) { food in
+                    Text("• \(food.emoji) \(food.name)")
                 }
-            }
 
-            if let feeling = selectedFeeling {
-                Text("AND YOU FEEL:")
+                Text("THEN YOU EXPERIENCED:")
                     .font(.headline)
-                Text("• \(feeling.emoji) \(feeling.name)")
-            } else {
-                Text("No feeling selected.")
-            }
+                // Check if any symptoms are selected
+                if selectedSymptoms.isEmpty {
+                    Text("No symptom selected.")
+                } else {
+                    ForEach(selectedSymptoms) { symptom in
+                        Text("• \(symptom.emoji) \(symptom.name)")
+                    }
+                }
 
-            Spacer() // Pushes the button to the bottom
+                if let feeling = selectedFeeling {
+                    Text("AND YOU FEEL:")
+                        .font(.headline)
+                    Text("• \(feeling.emoji) \(feeling.name)")
+                } else {
+                    Text("No feeling selected.")
+                }
 
-            // LOG YOUR MEAL button
-            Button(action: {
-                // Action for logging the meal goes here
-                print("Meal logged!")
-            }) {
-                Text("LOG YOUR MEAL")
-                    .frame(maxWidth: .infinity, minHeight: 50) // Full width and minimum height
-                    .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .font(.headline)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                Spacer() // Pushes the button to the bottom
+
+                // LOG YOUR MEAL button
+                Button(action: {
+                    // Action for logging the meal goes here
+                    print("Meal logged!")
+                }) {
+                    Text("LOG YOUR MEAL")
+                        .frame(maxWidth: .infinity, minHeight: 50) // Full width and minimum height
+                        .background(Color.accentColor)
+                        .foregroundColor(.white)
+                        .font(.headline)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                }
+                .padding(.bottom, 20) // Add some padding at the bottom
             }
-            .padding(.bottom, 20) // Add some padding at the bottom
+            .padding()
         }
-        .padding()
     }
 }
 
@@ -69,7 +71,14 @@ struct SummaryView_Previews: PreviewProvider {
         // Mock data for preview
         let mockFoods = [
             Food(name: "Apple", emoji: "🍎", category: "Fruits"),
-            Food(name: "Pizza", emoji: "🍕", category: "Fast Food")
+            Food(name: "Pizza", emoji: "🍕", category: "Fast Food"),
+            Food(name: "Banana", emoji: "🍌", category: "Fruits"),
+            Food(name: "Chocolate", emoji: "🍫", category: "Snacks"),
+            Food(name: "Sandwich", emoji: "🥪", category: "Lunch"),
+            Food(name: "Salad", emoji: "🥗", category: "Vegetables"),
+            Food(name: "Ice Cream", emoji: "🍦", category: "Dessert"),
+            Food(name: "Steak", emoji: "🥩", category: "Dinner"),
+            Food(name: "Pasta", emoji: "🍝", category: "Dinner")
         ]
         let mockSymptoms = [Symptom]() // No symptoms selected
         let mockFeeling = Feeling(name: "Happy", color: .yellow, emoji: "😊")
