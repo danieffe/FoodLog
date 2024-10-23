@@ -76,11 +76,12 @@ struct ContentView: View {
 
                     Spacer()
 
-                    Button("Next") {
+                    Button("Confirm") {
                         // Ritornare alla ResultView
                         presentationMode.wrappedValue.dismiss() // Chiude la ContentView e torna indietro
                     }
                     .font(.headline)
+                    .offset(y: 10)
                     .foregroundColor(selectedSymptoms.isEmpty ? .gray : .orange)
                     .padding(.bottom, 20)
                     .disabled(selectedSymptoms.isEmpty)

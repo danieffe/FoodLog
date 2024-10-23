@@ -11,7 +11,7 @@ struct FoodSelectView: View {
     @ObservedObject var viewModel = FoodViewModel()
     
     @State private var expandedCategory: String? = nil
-    @State private var selectedFoods: [String: Bool] = [:]
+    @State private var selectedFoods: [String: Bool] = [:] // Stores selected state of foods
     @State private var newFoodName: String = ""
     @State private var showInfoAlert: Bool = false
     
@@ -26,7 +26,7 @@ struct FoodSelectView: View {
                             .foregroundColor(.black)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal)
-                            .padding(.top, 5) // Add top padding if necessary
+                            .padding(.top, 5)
                         
                         ScrollView {
                             VStack(spacing: 0) {
@@ -49,7 +49,7 @@ struct FoodSelectView: View {
                                                 addNewFood(name: newFoodName, category: category)
                                             }
                                         )
-                                        .id(category) // Add identifier here
+                                        .id(category)
                                         .frame(height: expandedCategory == category ? 350 : 150)
                                         .padding(.horizontal, 20)
                                     }
@@ -58,17 +58,18 @@ struct FoodSelectView: View {
                             }
                         }
                         
-                        let text = selectedFoods.map { $0.key }.joined(separator: ", ")
+                        // Collect selected Food objects
+                        let selectedFoodObjects = viewModel.foods.filter { selectedFoods[$0.name] == true }
                         
-                        // The button should only be enabled if at least one food is selected
-                        NavigationLink(destination: ResultView(text: text)) {
+                        // NavigationLink to ResultView passing the selected food objects
+                        NavigationLink(destination: ResultView(foods: selectedFoodObjects)) {
                             Text("Next")
                                 .font(.headline)
-                                .foregroundColor(selectedFoods.values.contains(true) ? Color.orange : Color.gray) // Change text color based on condition
+                                .foregroundColor(selectedFoods.values.contains(true) ? Color.orange : Color.gray)
                                 .padding(.top, 10)
                                 .padding(.bottom, 20)
                         }
-                        .disabled(!selectedFoods.values.contains(true)) // Disable button if no foods are selected
+                        .disabled(!selectedFoods.values.contains(true)) // Disable if no food is selected
                     }
                     .navigationTitle("Welcome to FoodLog!")
                     .navigationBarItems(trailing: Button(action: {

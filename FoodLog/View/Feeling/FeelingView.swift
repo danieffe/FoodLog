@@ -25,7 +25,6 @@ struct FeelingView: View {
     
     @Binding var selectedFeeling: Feeling?
     @Environment(\.presentationMode) var presentationMode
-    @State var animationSelectedFeeling: Feeling?
     
     var body: some View {
         VStack {
@@ -43,51 +42,53 @@ struct FeelingView: View {
             
             // Scrollable emotion list with vertical scrolling
             ScrollView(.vertical, showsIndicators: false) {
-                VStack(spacing: 20) { // Change HStack to VStack for vertical layout
-                    ForEach(feelings) { feeling in
+                VStack(spacing: 20) {
+                    ForEach(feelings, id: \.name) { feeling in
                         Button(action: {
                             selectedFeeling = feeling // Update the selected feeling
-                            animationSelectedFeeling = feeling
                         }) {
                             VStack {
                                 Text(feeling.emoji)
                                     .font(.largeTitle)
                                 Text(feeling.name)
                                     .font(.system(size: 12))
-                                    .foregroundColor(.black) // Change text color to black for contrast
+                                    .foregroundColor(.black)
                                     .padding(.top, 1)
                             }
-                            .frame(width: 110, height: 110) // Same size for all buttons
-                            .background(animationSelectedFeeling == feeling ? Color.yellow : Color.white) // Highlight selected feeling
-                            .cornerRadius(15) // Round the corners
-                            .shadow(color: Color.black.opacity(0.2), radius: 8, x: 2, y: 3) // Add shadow for a shaded effect
+                            .frame(width: 110, height: 110)
+                            .background(selectedFeeling?.name == feeling.name ? Color.yellow : Color.white)
+                            .cornerRadius(15)
+                            .shadow(color: Color.black.opacity(0.2), radius: 8, x: 2, y: 3)
                         }
-                        .buttonStyle(PlainButtonStyle()) // Removes the default button style
+                        .buttonStyle(PlainButtonStyle())
                     }
                 }
                 .padding()
             }
-            .frame(maxHeight: .infinity) // Fill the available height with the ScrollView
+            .frame(maxHeight: .infinity)
             
-            // Next button at the bottom, disabled if no feeling is selected
+            // Confirm button at the bottom, disabled if no feeling is selected
             Button(action: {
                 presentationMode.wrappedValue.dismiss()
             }) {
                 Text("Confirm")
                     .font(.headline)
-                    .foregroundColor(animationSelectedFeeling == nil ? .gray : .orange) // Gray when disabled, blue when enabled
+                    .foregroundColor(selectedFeeling == nil ? .gray : .orange)
                     .padding()
             }
-            .disabled(animationSelectedFeeling == nil) // Disable the button if no feeling is selected
-            .padding(.bottom, 20) // Padding from the bottom of the screen
+            .disabled(selectedFeeling == nil)
+            .padding(.bottom, 20)
         }
-        .frame(maxHeight: .infinity, alignment: .center) // Centers the VStack's content vertically
+        .frame(maxHeight: .infinity, alignment: .center)
+        .onAppear {
+            // Reset the selected feeling each time the view appears
+            selectedFeeling = nil
+        }
     }
 }
 
 struct FeelingView_Previews: PreviewProvider {
-    @State static var previewFeeling: Feeling? =
-    Feeling(name: "Angry", color: .red, emoji: "😡")
+    @State static var previewFeeling: Feeling? = Feeling(name: "Angry", color: .red, emoji: "😡")
 
     static var previews: some View {
         FeelingView(selectedFeeling: $previewFeeling)
