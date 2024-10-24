@@ -12,8 +12,11 @@ struct SummaryView: View {
     var selectedSymptoms: [Symptom]
     var selectedFeeling: Feeling?
 
+    @State private var showingInsightView = false // State to trigger navigation
+    @State private var timestamp: String = ""
+
     var body: some View {
-        ScrollView { // Wrap the content in a ScrollView
+        ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 Text("Summary")
                     .font(.largeTitle)
@@ -28,7 +31,6 @@ struct SummaryView: View {
 
                 Text("THEN YOU EXPERIENCED:")
                     .font(.headline)
-                // Check if any symptoms are selected
                 if selectedSymptoms.isEmpty {
                     Text("No symptom selected.")
                 } else {
@@ -45,21 +47,29 @@ struct SummaryView: View {
                     Text("No feeling selected.")
                 }
 
-                Spacer() // Pushes the button to the bottom
+                Spacer()
 
-                // LOG YOUR MEAL button
                 Button(action: {
-                    // Action for logging the meal goes here
-                    print("Meal logged!")
+                    // Get current date and time
+                    let formatter = DateFormatter()
+                    formatter.dateFormat = "yyyy-MM-dd HH:mm"
+                    timestamp = formatter.string(from: Date())
+
+                    // Show the InsightView
+                    showingInsightView = true
                 }) {
                     Text("LOG YOUR MEAL")
-                        .frame(maxWidth: .infinity, minHeight: 50) // Full width and minimum height
+                        .frame(maxWidth: .infinity, minHeight: 50)
                         .background(Color.accentColor)
                         .foregroundColor(.white)
                         .font(.headline)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
-                .padding(.bottom, 20) // Add some padding at the bottom
+                .padding(.bottom, 20)
+                .sheet(isPresented: $showingInsightView) {
+                    // Present the InsightView
+                    InsightView(selectedFoods: selectedFoods, selectedSymptoms: selectedSymptoms, selectedFeeling: selectedFeeling, timestamp: timestamp)
+                }
             }
             .padding()
         }
@@ -68,17 +78,9 @@ struct SummaryView: View {
 
 struct SummaryView_Previews: PreviewProvider {
     static var previews: some View {
-        // Mock data for preview
         let mockFoods = [
             Food(name: "Apple", emoji: "🍎", category: "Fruits"),
-            Food(name: "Pizza", emoji: "🍕", category: "Fast Food"),
-            Food(name: "Banana", emoji: "🍌", category: "Fruits"),
-            Food(name: "Chocolate", emoji: "🍫", category: "Snacks"),
-            Food(name: "Sandwich", emoji: "🥪", category: "Lunch"),
-            Food(name: "Salad", emoji: "🥗", category: "Vegetables"),
-            Food(name: "Ice Cream", emoji: "🍦", category: "Dessert"),
-            Food(name: "Steak", emoji: "🥩", category: "Dinner"),
-            Food(name: "Pasta", emoji: "🍝", category: "Dinner")
+            Food(name: "Pizza", emoji: "🍕", category: "Fast Food")
         ]
         let mockSymptoms = [Symptom]() // No symptoms selected
         let mockFeeling = Feeling(name: "Happy", color: .yellow, emoji: "😊")

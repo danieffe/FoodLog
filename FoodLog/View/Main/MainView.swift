@@ -16,7 +16,7 @@ struct MainView: View {
                     Label("LogPage", systemImage: "fork.knife")
                 }
             
-            InsightView()
+            InsightView(selectedFoods: [], selectedSymptoms: [], selectedFeeling: nil, timestamp: "2024-10-23 15:30") // Provide default values
                 .tabItem {
                     Label("Insights", systemImage: "lightbulb.fill")
                 }
