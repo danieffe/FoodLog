@@ -1,1 +1,4 @@
 # FoodLog
+FoodLog makes tracking food allergies and triggers easier than ever before. The app allows you to quickly log the foods you eat using a simple, intuitive interface. Whether you're eating out or at home, you can easily input each meal, ensuring that nothing gets missed.
+In addition to selecting foods from the app’s built-in database, users have the option to add new foods that may not already be listed. This means even unique dishes or homemade recipes can be accurately logged.
+But FoodLog doesn't stop at just tracking your meals. Once you’ve logged what you ate, you can also specify any symptoms you experience. Whether it’s an immediate reaction like itching or something that happens later, like bloating or headaches, this feature helps you track potential triggers that might not be obvious right away.
