@@ -2,7 +2,7 @@
 //  MainView.swift
 //  FoodLog
 //
-//  Created by Mateus Mansuelli on 07/10/24.
+//  Created by Daniele Fontana on 07/10/24.
 //
 
 import SwiftUI
